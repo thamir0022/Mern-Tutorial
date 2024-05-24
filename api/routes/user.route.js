@@ -9,5 +9,4 @@ app.get('/', homePage);
 app.post('/sign-in', signIn);
 app.post('/sign-up', signUp);
 
-
 export default app;

@@ -16,6 +16,7 @@
     "express": "^4.19.2"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "mongodb": "^6.6.2",
     "mongoose": "^8.4.0",
     "nodemon": "^3.1.0"
