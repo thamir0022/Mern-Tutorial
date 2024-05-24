@@ -2,7 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import userRoutes from './routes/user.route.js'
 import cookieparser from 'cookie-parser'
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
 const port = 3000;
 
@@ -11,8 +13,7 @@ app.listen(port, () => {
 	console.log(`http://localhost:${port}`);
 });
 
-mongoose.connect('mongodb+srv://thamir:123@mern-tutorial.99oq83n.mongodb.net/?retryWrites=true&w=majority&appName=Mern-Tutorial')
-.then(() => {
+mongoose.connect(process.env.MONGO).then(() => {
 	console.log('MongoDb Connected');
 })
 
