@@ -1,16 +1,27 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import Layout from './components/Layout'
+import HomePage from './pages/HomePage'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Cart from './pages/Cart'
 
 const App = () => {
   return (
-    <div className='flex flex-col'>
-    <Header/>
-      <div className="h-[calc(100vh-4rem)] w-screen">
-      <div className='text-green-700 text-3xl text-center'>Hello World!</div>
-      </div>
-      <Footer/>
-    </div>
+    <BrowserRouter className='flex flex-col'>
+      <Header/>
+          <Layout>
+              <Routes>
+                  <Route path='/' element={<div>Home Page</div>} />
+                  <Route path='/about' element={<About/>} />
+                  <Route path='/contact' element={<Contact/>} />
+                  <Route path='/cart' element={<Cart/>} />
+              </Routes>
+          </Layout>
+    <Footer/>
+    </BrowserRouter>
   )
 }
 
