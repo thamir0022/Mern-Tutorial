@@ -1,3 +1,6 @@
-export const homePage = (req, res) => {
-	res.send('Home Page');
+import {Product} from '../models/product.model.js'
+
+export const getProducts = async(req, res) => {
+	const allProducts = await Product.find();
+	res.json({allProducts})
 }

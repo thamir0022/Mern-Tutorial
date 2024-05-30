@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import userRoutes from './routes/user.route.js'
+import adminRoutes from './routes/admin.route.js'
 import cookieparser from 'cookie-parser'
 import dotenv from 'dotenv';
 
@@ -21,3 +22,5 @@ app.use(express.json());
 app.use(cookieparser());
 
 app.use('/api/user', userRoutes);
+app.use('/api/admin', adminRoutes);
+
