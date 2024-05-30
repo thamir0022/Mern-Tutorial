@@ -14,7 +14,18 @@ export const addToCart = async (req, res) => {
         return;
 	}else{
 		const {productId} = req.body;
-    	await User.updateOne({email}, {$push: {cart: {$each: [{product: productId, quantity: 1}], $position: 0}}}, {new: true, upsert: true});
+		const user = await User.findOne({email});
+		if(!user){
+			res.json({message: 'Please Sign In'});
+		}else{
+			const productIndex = user.cart.findIndex(item => item.product.toString() === productId);
+			if(productIndex >  -1){
+				user.cart[productIndex].quantity += 1;
+			}else{
+				user.cart.unshift({product: productId, quantity: 1});
+			}
+			await user.save();
+		}
 		res.json({message: 'Product added to cart'})
 	}
 	} catch (error) {
@@ -36,3 +47,28 @@ export const getCartProducts = async (req, res) =>{
 			res.json({error:  error.message});
 		}
 } 
+
+
+export const deleteCartProduct = async(req, res) => {
+	try {
+		const {email} = req.cookies.access_token.user;
+		const {productId} = req.body;
+		if(!email){
+			res.json({message: 'Please Sign In'});
+		}else{
+			const user = await User.findOne({email});
+			if(!user){
+				res.json({message: 'User not found!'});
+			}else{
+				const productIndex = user.cart.findIndex(item => item.product.toString() === productId);
+                if(productIndex >  -1){
+                    user.cart.splice(productIndex, 1);
+                }
+                await user.save();
+                res.json({message: 'Product deleted from cart'})
+			}
+		}
+	} catch (error) {
+		res.json({error:  error.message});
+	}
+}

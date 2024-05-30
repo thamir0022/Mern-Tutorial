@@ -15,7 +15,20 @@ const Cart = () => {
     getCart();
   }, []);
 
-  console.log(cart);
+  const handleDelete = async (productId) => {
+    const res = await fetch('/api/user/delete-cart-product', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({productId})
+    })
+
+    if(res.ok){
+      setCart(cart.filter(product => product.product._id.toString() !== productId))
+    }
+  }
+
   return (
     <section>
       <h1 className='text-3xl my-10 text-center'>Your Cart</h1>
@@ -29,6 +42,7 @@ const Cart = () => {
               <span>{product.product.name}</span>
               <span>{product.product.price.toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</span>
               <span>{product.quantity}</span>
+              <button onClick={() => handleDelete(product.product._id)} className='px-5 py-3 bg-red-500 text-white rounded-md shadow-lg'>Delete</button>
             </div>
             )
           })}
