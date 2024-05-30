@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Hero from '../components/Hero';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -16,10 +17,10 @@ const HomePage = () => {
 
   return (
     <section>
-      <h1 className='text-3xl text-center'>Welcome</h1>
+      <Hero/>
       <div className="w-full px-6 py-10 flex flex-wrap gap-6 justify-center">
         {products?.length > 0 && products.map((product) => (
-          <div className="w-[400px] h-[550px]  flex flex-col border-2 border-black rounded-xl shadow-md items-center">
+          <div className="w-[400px] h-[550px]  flex flex-col  rounded-2xl shadow-md items-center">
               <img className=' p-5 h-1/2' src={product.image} alt={product.name} />
               <span className='text-2xl text-center'>{product.name}</span>
               <div className='w-full flex justify-between'>
