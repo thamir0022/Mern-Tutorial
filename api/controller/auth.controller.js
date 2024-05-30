@@ -11,7 +11,7 @@ export const signIn = async (req, res) => {
         }else{
             if(user.password === password){
                 const { password, ...rest } = user._doc;
-                res.status(200).cookie("access_token", {rest},{httpOnly: true,}).json({message: "User Signed In Successfully"});
+                res.status(200).cookie("access_token", {user: rest},{httpOnly: true,}).json({message: "User Signed In Successfully"});
             }else{
                 res.json({message:'Incorrect Password'});
             }
