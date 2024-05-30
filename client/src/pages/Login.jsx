@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     const res = await fetch('/api/user/sign-in', {
@@ -14,10 +16,10 @@ const Login = () => {
       body: JSON.stringify({email, password})
     })
     if(res.ok){
-      const data = await res.json();
-      console.log(data);
+      navigate('/');
     }
   }
+
   return (
        <form onSubmit={handleSubmit} className='flex-center flex-col gap-6  py-10 px-5 rounded-md bg-gray-100'>
         <img className='h-10' src="https://en.wikichip.org/w/images/thumb/a/a9/Amazon_logo.svg/603px-Amazon_logo.svg.png" alt="logo" />
