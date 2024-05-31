@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Hero from '../components/Hero';
+import Rating from '@mui/material/Rating';
+
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -34,13 +36,14 @@ const HomePage = () => {
       <Hero/>
       <div className="w-full px-6 py-10 flex flex-wrap gap-6 justify-center">
         {products?.length > 0 && products.map((product) => (
-          <div className="w-[400px] h-[550px]  flex flex-col  rounded-2xl shadow-md items-center">
+          <div className="w-[400px] h-[550px]  flex flex-col gap-3  rounded-2xl shadow-md items-center">
               <img className=' p-5 h-1/2' src={product.image} alt={product.name} />
               <span className='text-2xl text-center'>{product.name}</span>
-              <div className='w-full flex justify-between'>
-                <div className="text-xl">Rating {product.rating}</div>
+              <div className='w-full flex justify-around'>
+              <Rating size='large' name="read-only" value={product.rating} precision={0.5} readOnly />
+              <span>267</span>
               </div>
-              <span className='text-2xl text-center'>{product.price.toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</span>
+              <span className='text-2xl text-center font-semibold'>{product.price.toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</span>
               <button onClick={() => addToCart(product._id)} className='w-3/4 bg-blue-500 rounded-md shadow-md text-white font-semibold p-5'>Add to cart</button>
           </div>
         ))}

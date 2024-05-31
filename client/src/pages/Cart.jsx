@@ -15,6 +15,16 @@ const Cart = () => {
     getCart();
   }, []);
 
+  useEffect(() => {
+    // Calculate total amount when cart products change
+    if (cart.length > 0) {
+      const total = cart.reduce((acc, item) => acc + item.product.price, 0);
+      setTotal(total);
+    } else {
+      setTotal(0);
+    }
+  }, [cart]);
+
   const handleDelete = async (productId) => {
     const res = await fetch('/api/user/delete-cart-product', {
       method: 'DELETE',
@@ -29,6 +39,8 @@ const Cart = () => {
     }
   }
 
+  console.log(total);
+
   return (
     <section>
       <h1 className='text-3xl my-10 text-center'>Your Cart</h1>
@@ -37,15 +49,16 @@ const Cart = () => {
          <>
           {cart.map((product) => {
             return (
-              <div className="h-96 w-full mx-auto rounded-md shadow-lg border border-black flex items-center  justify-evenly text-2xl font-semibold">
-              <img className='h-52' src={product.product.image} alt="" />
+              <div className="h-96 w-full mx-auto rounded-md shadow-xl  flex items-center  justify-evenly text-2xl font-semibold">
+              <img className='h-60' src={product.product.image} alt="" />
               <span>{product.product.name}</span>
-              <span>{product.product.price.toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</span>
+              <span>{(product.product.price * product.quantity).toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</span>
               <span>{product.quantity}</span>
               <button onClick={() => handleDelete(product.product._id)} className='px-5 py-3 bg-red-500 text-white rounded-md shadow-lg'>Delete</button>
             </div>
             )
           })}
+          <div className="text-3xl font-semibold">Total Amount  {total.toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</div>
           <button className='w-1/3 bg-blue-500 px-10 py-5 rounded-md text-white font-semibold text-xl'>Checkout</button>
          </>
         ): (
