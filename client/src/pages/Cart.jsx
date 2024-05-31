@@ -18,7 +18,7 @@ const Cart = () => {
   useEffect(() => {
     // Calculate total amount when cart products change
     if (cart.length > 0) {
-      const total = cart.reduce((acc, item) => acc + item.product.price, 0);
+      const total = cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
       setTotal(total);
     } else {
       setTotal(0);
@@ -39,7 +39,39 @@ const Cart = () => {
     }
   }
 
-  console.log(total);
+const handleQuantityUpdate = async (productId, operation) => {
+  try {
+    const res = await fetch(`/api/user/update-cart-product-quantity/${productId}/${operation}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      method: 'PATCH'
+    })
+    if(res.ok){
+      setCart(prevCart => {
+        return prevCart.map(product => {
+          if (product.product._id === productId) {
+            let newQuantity;
+            if (operation === 'inc' && product.quantity < 10) {
+              newQuantity = product.quantity + 1;
+            } else if (operation === 'dec' && product.quantity > 1) {
+              newQuantity = product.quantity - 1;
+            } else {
+              // If the quantity is already at the limit, do not change it
+              newQuantity = product.quantity;
+            }
+            return { ...product, quantity: newQuantity };
+          } else {
+            return product;
+          }
+        });
+      });
+      
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
   return (
     <section>
@@ -49,11 +81,24 @@ const Cart = () => {
          <>
           {cart.map((product) => {
             return (
-              <div className="h-96 w-full mx-auto rounded-md shadow-xl  flex items-center  justify-evenly text-2xl font-semibold">
+              <div className="h-96 w-full mx-auto rounded-md shadow-xl  flex items-center  justify-evenly">
               <img className='h-60' src={product.product.image} alt="" />
-              <span>{product.product.name}</span>
-              <span>{(product.product.price * product.quantity).toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</span>
-              <span>{product.quantity}</span>
+              <div className="flex flex-col gap-2">
+                <span className='text-xl text-center text-gray-500'>Item Name</span>
+                <span className='text-2xl font-semibold'>{product.product.name}</span>
+              </div>
+              <div className="flex flex-col gap-2">
+                <span className='text-xl text-center text-gray-500'>Amount</span>
+                <span className='text-2xl font-semibold'>{(product.product.price * product.quantity).toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</span>
+              </div>
+              <div className="w-1/6 flex flex-col gap-2">
+                <span className='text-xl text-center text-gray-500'>Quantity</span>
+                <div className="flex justify-evenly items-center">
+                  <button onClick={() => handleQuantityUpdate(product.product._id, 'inc')} className='px-3 py-2 bg-gray-300 rounded-md text-3xl'>+</button>
+                  <span className='text-2xl text-center font-semibold'>{product.quantity}</span>
+                  <button onClick={() => handleQuantityUpdate(product.product._id, 'dec')}  className='px-4 py-2 bg-gray-300 rounded-md text-3xl'>-</button>
+                </div>
+              </div>
               <button onClick={() => handleDelete(product.product._id)} className='px-5 py-3 bg-red-500 text-white rounded-md shadow-lg'>Delete</button>
             </div>
             )

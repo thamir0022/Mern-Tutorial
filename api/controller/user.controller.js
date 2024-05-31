@@ -72,3 +72,27 @@ export const deleteCartProduct = async(req, res) => {
 		res.json({error:  error.message});
 	}
 }
+
+export const updateCartProductQuantity = async(req, res) => {
+ try {
+	const {email} = req.cookies.access_token.user;
+	if(!email){
+		res.json({message: 'Please Sign In'});
+	}else{
+		const operation = req.params.op;
+		const productId = req.params.productId;
+		const user = await User.findOne({email});
+		const productIndex = user.cart.findIndex(item => item.product.toString() === productId);
+			if(productIndex >  -1){
+				if(operation === 'inc'){
+					if(user.cart[productIndex].quantity < 10) user.cart[productIndex].quantity += 1;
+				}else if(operation === 'dec'){
+					if(user.cart[productIndex].quantity > 1) user.cart[productIndex].quantity -= 1;
+				}
+			await user.save();
+	}
+	res.json({message: 'Product quantity updated'});
+}}catch (error) {
+	console.log(error);
+ }
+}
