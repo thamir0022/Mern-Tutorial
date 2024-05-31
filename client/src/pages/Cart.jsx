@@ -75,8 +75,8 @@ const handleQuantityUpdate = async (productId, operation) => {
 
   return (
     <section>
-      <h1 className='text-3xl my-10 text-center'>Your Cart</h1>
-      <div className="w-full px-10 py-20 flex  flex-col justify-center items-center gap-10">
+      {cart?.length > 0 && <h1 className='text-4xl mt-10 text-center font-semibold'>Your Cart</h1> }
+      <div className="w-full min-h-[calc(100vh-6rem)] px-10 py-10 flex  flex-col justify-center items-center gap-10">
         {cart?.length > 0 ? (
          <>
           {cart.map((product) => {
@@ -107,7 +107,7 @@ const handleQuantityUpdate = async (productId, operation) => {
           <button className='w-1/3 bg-blue-500 px-10 py-5 rounded-md text-white font-semibold text-xl'>Checkout</button>
          </>
         ): (
-          <div className="text-2xl font-semibold">Your Cart Is Empty!</div>
+          <div className="text-2xl font-semibold text-gray-400">Your Cart Is Empty!</div>
         )}
       </div>
     </section>
