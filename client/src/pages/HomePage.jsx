@@ -42,6 +42,7 @@ const HomePage = () => {
               <div className='w-full flex justify-around'>
               <Rating size='large' name="read-only" value={product.rating} precision={0.5} readOnly />
               <span>267</span>
+              <span className='p-1 rounded-full bg-red-600 text-white font-semibold'>50%</span>
               </div>
               <span className='text-2xl text-center font-semibold'>{product.price.toLocaleString('en-IN', {maximumFractionDigits: 2, style: 'currency', currency: 'INR'})}</span>
               <button onClick={() => addToCart(product._id)} className='w-3/4 bg-blue-500 rounded-md shadow-md text-white font-semibold p-5'>Add to cart</button>
