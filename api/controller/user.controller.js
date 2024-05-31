@@ -19,7 +19,7 @@ export const addToCart = async (req, res) => {
 			res.json({message: 'Please Sign In'});
 		}else{
 			const productIndex = user.cart.findIndex(item => item.product.toString() === productId);
-			if(productIndex >  -1){
+			if(productIndex >  -1 && user.cart[productIndex].quantity < 10){
 				user.cart[productIndex].quantity += 1;
 			}else{
 				user.cart.unshift({product: productId, quantity: 1});
