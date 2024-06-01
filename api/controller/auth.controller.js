@@ -11,7 +11,7 @@ export const signIn = async (req, res) => {
         }else{
             if(user.password === password){
                 const { password, ...rest } = user._doc;
-                res.status(200).cookie("access_token", {user: rest},{httpOnly: true,}).json({message: "User Signed In Successfully"});
+                res.status(200).cookie("access_token", {user: rest},{httpOnly: true,}).json({user: rest});
             }else{
                 res.json({message:'Incorrect Password'});
             }
@@ -31,4 +31,9 @@ export const signUp = async(req, res) => {
         await newUser.save();
         res.status(201).json({message: 'Account created successfully'});
     }
+}
+
+export const signOut = async(req, res) => {
+    res.clearCookie('access_token');
+    res.json({message: 'User signed out'});
 }

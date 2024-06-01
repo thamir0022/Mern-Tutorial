@@ -10,11 +10,14 @@ import Cart from './pages/Cart'
 import Orders from './pages/Orders'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
+import ContextProvider from './context/UserContext'
 
 
 const App = () => {
   return (
-    <BrowserRouter className='flex flex-col'>
+   <main>
+    <ContextProvider>
+     <BrowserRouter className='flex flex-col'>
       <Header/>
           <Layout>
               <Routes>
@@ -29,6 +32,8 @@ const App = () => {
           </Layout>
     <Footer/>
     </BrowserRouter>
+   </ContextProvider>
+   </main>
   )
 }
 

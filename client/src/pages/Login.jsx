@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
+import { UserContext } from '../context/UserContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -16,7 +17,9 @@ const Login = () => {
       body: JSON.stringify({email, password})
     })
     if(res.ok){
-      navigate('/');
+      const data = await res.json();
+      localStorage.setItem("user", JSON.stringify({email: data.user.email, id: data.user._id}));
+      window.location.href = '/'; // Redirect to the '/' route
     }
   }
 
